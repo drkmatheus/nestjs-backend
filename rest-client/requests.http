@@ -9,3 +9,7 @@ Content-Type: application/json
     "email":"user@mail.com",
     "password":"1234"
 }
+
+### Get user by id
+# @name findUserById
+GET {{baseUrl}}/user/1
