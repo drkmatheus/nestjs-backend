@@ -7,9 +7,9 @@ Content-Type: application/json
 
 {
     "email":"user@mail.com",
-    "password":""
+    "password":"11111111"
 }
 
 ### Get user by id
 # @name findUserById
-GET {{baseUrl}}/user/1
+GET {{baseUrl}}/user/12
