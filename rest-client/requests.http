@@ -13,3 +13,14 @@ Content-Type: application/json
 ### Get user by id
 # @name findUserById
 GET {{baseUrl}}/user/aaaaa
+
+### create a user
+# @name createUser
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+    "name":"Matheus",
+    "email":"user@mail.com",
+    "password":"11111111"
+}
