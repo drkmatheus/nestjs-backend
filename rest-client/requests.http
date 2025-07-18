@@ -12,4 +12,4 @@ Content-Type: application/json
 
 ### Get user by id
 # @name findUserById
-GET {{baseUrl}}/user/12
+GET {{baseUrl}}/user/aaaaa
