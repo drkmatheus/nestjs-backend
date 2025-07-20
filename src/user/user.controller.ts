@@ -1,10 +1,21 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CustomParseIntPipe } from 'src/common/pipes/custom-parse-int-pipe.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { strategies } from 'passport';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Request } from 'express';
+import { AuthenticatedRequest } from 'src/auth/types/authenticated-requests';
 
 @Controller('user')
 export class UserController {
@@ -13,9 +24,13 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findUserById(@Param('id', CustomParseIntPipe) id: number) {
+  findUserById(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', CustomParseIntPipe) id: number,
+  ) {
+    console.log(req.user.email);
     return `Olá número ${id}`;
   }
 
