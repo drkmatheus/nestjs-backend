@@ -39,6 +39,10 @@ export class UserService {
     return this.userRespository.findOneBy({ email });
   }
 
+  findById(id: string) {
+    return this.userRespository.findOneBy({ id });
+  }
+
   save(user: User) {
     return this.userRespository.save(user);
   }
