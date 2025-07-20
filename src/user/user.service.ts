@@ -34,4 +34,12 @@ export class UserService {
     const create = this.userRespository.save(newUser);
     return create;
   }
+
+  findByEmail(email: string) {
+    return this.userRespository.findOneBy({ email });
+  }
+
+  save(user: User) {
+    return this.userRespository.save(user);
+  }
 }
