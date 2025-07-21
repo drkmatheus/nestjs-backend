@@ -7,7 +7,7 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "email":"mari@mail.com",
+    "email":"teste@mail.com",
     "password":"11111111"
 }
 
@@ -22,8 +22,8 @@ POST {{baseUrl}}/user
 Content-Type: application/json
 
 {
-    "name":"Matheus",
-    "email":"user@mail.com",
+    "name":"Teste",
+    "email":"teste@mail.com",
     "password":"11111111"
 }
 
@@ -50,3 +50,13 @@ Authorization: Bearer {{jwtToken}}
     "newPassword":"123456"
 
 }
+
+### get logged user
+# @name getLoggedUser
+GET {{baseUrl}}/user/me
+Authorization: Bearer {{jwtToken}}
+
+### delete logged user
+# @name deleteLoggedUser
+DELETE {{baseUrl}}/user/me
+Authorization: Bearer {{jwtToken}}
