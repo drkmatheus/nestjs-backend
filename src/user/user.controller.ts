@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -11,11 +12,9 @@ import { ConfigService } from '@nestjs/config';
 import { CustomParseIntPipe } from 'src/common/pipes/custom-parse-int-pipe.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { strategies } from 'passport';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Request } from 'express';
 import { AuthenticatedRequest } from 'src/auth/types/authenticated-requests';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -37,5 +36,11 @@ export class UserController {
   @Post()
   create(@Body() dto: CreateUserDto) {
     return this.userService.create(dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('me')
+  update(@Req() req: AuthenticatedRequest, @Body() dto: UpdateUserDto) {
+    return this.userService.update(req.user.id, dto);
   }
 }
