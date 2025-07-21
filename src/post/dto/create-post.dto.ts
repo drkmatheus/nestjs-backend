@@ -20,6 +20,9 @@ export class CreatePostDto {
   content: string;
 
   @IsOptional()
-  @IsUrl({ require_tld: false })
+  @IsUrl(
+    { require_tld: false },
+    { message: 'A URL não pode ser um campo vazio' },
+  )
   coverImgUrl?: string;
 }

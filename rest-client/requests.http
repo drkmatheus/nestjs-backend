@@ -85,7 +85,8 @@ Authorization: Bearer {{jwtToken}}
 {
   "title": "Título do post",
   "excerpt": "Excerto do post para teste",
-  "content": "Conteúdo"
+  "content": "Conteúdo",
+  "coverImgUrl":"http://localhost"
 }
 
 ### Read all post public
