@@ -7,7 +7,7 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "email":"user@mail.com",
+    "email":"mari@mail.com",
     "password":"11111111"
 }
 
@@ -34,7 +34,6 @@ Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
-    "name":"Matheus",
-    "email":"user@mail.com"
+    "email":"matheus@mail.com"
 
 }

@@ -33,9 +33,7 @@ export class AuthService {
       sub: existingEmail.id,
       email: existingEmail.email,
     };
-    const signJwt = await this.jwtService.signAsync({
-      jwtPayload,
-    });
+    const signJwt = await this.jwtService.signAsync(jwtPayload);
 
     existingEmail.forceLogout = false;
 
