@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -57,5 +58,31 @@ export class PostController {
   ) {
     const post = await this.postService.update({ id }, dto, req.user);
     return new PostResponseDto(post);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('me/:id')
+  async remove(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const post = await this.postService.remove({ id }, req.user);
+    return new PostResponseDto(post);
+  }
+
+  @Get(':slug')
+  async findPostPublished(@Param('slug') slug: string) {
+    const post = await this.postService.findOnePostOrFail({
+      slug,
+      published: true,
+    });
+    return new PostResponseDto(post);
+  }
+
+  @Get()
+  async findAllPublishedPosts() {
+    const posts = await this.postService.findAllPosts({ published: true });
+
+    return posts.map((post) => new PostResponseDto(post));
   }
 }

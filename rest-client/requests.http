@@ -83,7 +83,7 @@ Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
-  "title": "Título do post",
+  "title": "TITULO TESTE DO POST",
   "excerpt": "Excerto do post para teste",
   "content": "Conteúdo",
   "coverImgUrl":"http://localhost"
