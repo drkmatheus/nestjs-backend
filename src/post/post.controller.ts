@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { AuthenticatedRequest } from 'src/auth/types/authenticated-requests';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -14,5 +23,26 @@ export class PostController {
   async create(@Req() req: AuthenticatedRequest, @Body() dto: CreatePostDto) {
     const post = await this.postService.create(dto, req.user);
     return new PostResponseDto(post);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me/:id')
+  async findPostByAuthor(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const post = await this.postService.findOnePostByAuthorOrFail(
+      { id },
+      req.user,
+    );
+    return new PostResponseDto(post);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async findAllPostsByAuthor(@Req() req: AuthenticatedRequest) {
+    const posts = await this.postService.findAllPostsByAuthor(req.user);
+
+    return posts.map((post) => new PostResponseDto(post));
   }
 }

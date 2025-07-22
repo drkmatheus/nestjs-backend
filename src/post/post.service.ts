@@ -1,10 +1,16 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Post } from './entities/post.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { User } from 'src/user/entities/user.entity';
 import { CreateSlug } from 'src/common/utils/create-slug';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -14,6 +20,59 @@ export class PostService {
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
   ) {}
+
+  async findOnePostorFail(postData: Partial<Post>) {
+    const post = await this.findOnePost(postData);
+
+    if (!post) {
+      throw new NotFoundException('Post não encontrado');
+    }
+
+    return post;
+  }
+
+  async findOnePostByAuthorOrFail(postData: Partial<Post>, author: User) {
+    const post = await this.findOnePostByAuthor(postData, author);
+
+    if (!post) {
+      throw new NotFoundException('Post não encontrado');
+    }
+
+    return post;
+  }
+
+  async findOnePostByAuthor(postData: Partial<Post>, author: User) {
+    const post = await this.postRepository.findOne({
+      where: {
+        ...postData,
+        author: { id: author.id },
+      },
+      relations: ['author'],
+    });
+    return post;
+  }
+
+  async findOnePost(postData: Partial<Post>) {
+    const post = await this.postRepository.findOne({
+      where: postData,
+      relations: ['author'],
+    });
+    return post;
+  }
+
+  async findAllPostsByAuthor(author: User) {
+    const posts = await this.postRepository.find({
+      where: {
+        author: { id: author.id },
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: ['author'],
+    });
+
+    return posts;
+  }
 
   async create(dto: CreatePostDto, author: User) {
     const post = this.postRepository.create({
