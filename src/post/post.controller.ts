@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -13,6 +14,7 @@ import { AuthenticatedRequest } from 'src/auth/types/authenticated-requests';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('post')
 export class PostController {
@@ -44,5 +46,16 @@ export class PostController {
     const posts = await this.postService.findAllPostsByAuthor(req.user);
 
     return posts.map((post) => new PostResponseDto(post));
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('me/:id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Req() req: AuthenticatedRequest,
+    @Body() dto: UpdatePostDto,
+  ) {
+    const post = await this.postService.update({ id }, dto, req.user);
+    return new PostResponseDto(post);
   }
 }
